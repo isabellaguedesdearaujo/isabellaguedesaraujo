@@ -25,7 +25,78 @@ for (let i = 100; i >= 0; i -= 5) {
     }
     console.log('Acabou!');
 
-Questão 05
+Questão 05:
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('Digite um valor inteiro e positivo: ', (valor) => {
+  const numero = parseInt(valor);
+
+  if (isNaN(numero) || numero <= 0) {
+    console.log('Por favor, digite um número inteiro positivo.');
+  } else {
+    let contagem = '';
+
+    for (let i = 1; i <= numero; i++) {
+      contagem += i + ' ';
+    }
+
+    console.log('Contagem:', contagem.trim());
+    console.log('Acabou!');
+  }
+
+  rl.close();
+});
+
+
+Questão 06:
+let resultado = [];
+
+for (let i = 30; i >= 1; i--) {
+  if (i % 4 === 0) {
+    resultado.push(`[${i}]`);
+  } else {
+    resultado.push(i.toString());
+  }
+}
+
+console.log(resultado.join(" "));
+
+Questão 07:
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+let inicio, fim, incremento;
+
+rl.question('Digite o primeiro valor: ', (resposta) => {
+  inicio = Number(resposta);
+
+  rl.question('Digite o último valor: ', (resposta) => {
+    fim = Number(resposta);
+
+    rl.question('Digite o incremento: ', (resposta) => {
+      incremento = Number(resposta);
+
+      console.log('Contagem:');
+
+      for (let i = inicio; i < fim; i += incremento) {
+        process.stdout.write(i + ' ');
+      }
+
+      console.log('\nAcabou!');
+      rl.close();
+    });
+  });
+});
+
 
  
 
