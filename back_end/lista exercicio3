@@ -14,3 +14,7 @@ while (energia > 3) {
 }
 
 questão 03:
+for (let i = 0; i <= 18; i +=3) {
+  console.log(`Contagem: ${i}`);
+    }
+    console.log('Acabou!');
