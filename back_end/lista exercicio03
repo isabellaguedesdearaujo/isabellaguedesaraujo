@@ -1,0 +1,16 @@
+questão 01:
+for (let i = 6; i < 11; i++) {
+    // i++ é o incremento que evita o loop infinito
+    console.log(`Contagem: ${i}`);
+   }
+ console.log('Acabou!');
+
+questão 02:
+let energia = 10;
+// Executa enquanto a condição for verdadeira
+while (energia > 3) {
+    console.log(`Trabalhando... Energia restante: ${energia}`);
+    energia--; // Crucial para o controle da lógica
+}
+
+questão 03:
