@@ -1,11 +1,11 @@
-Questão 01:
+Questão 01:Escreva um programa que mostre na tela a seguinte contagem: 6 7 8 9 10 11 Acabou!
 for (let i = 6; i < 11; i++) {
     // i++ é o incremento que evita o loop infinito
     console.log(`Contagem: ${i}`);
    }
  console.log('Acabou!');
 
-Questão 02:
+Questão 02:Faça um algoritmo que mostre na tela a seguinte contagem: 10 9 8 7 6 5 4 3 Acabou!
 let energia = 10;
 // Executa enquanto a condição for verdadeira
 while (energia > 3) {
@@ -13,19 +13,20 @@ while (energia > 3) {
     energia--; // Crucial para o controle da lógica
 }
 
-Questão 03:
+Questão 03:Crie um aplicativo que mostre na tela a seguinte contagem: 0 3 6 9 12 15 18 Acabou
 for (let i = 0; i <= 18; i +=3) {
   console.log(`Contagem: ${i}`);
     }
     console.log('Acabou!');
 
-Questão: 04
+Questão: 04: Desenvolva um programa que mostre na tela a seguinte contagem: 100 95 90 85 80 ... 0 Acabou!
 for (let i = 100; i >= 0; i -= 5) {
   console.log(`Contagem: ${i}`);
     }
     console.log('Acabou!');
 
-Questão 05:
+Questão 05:Faça um algoritmo que pergunte ao usuário um número inteiro e positivo qualquer e mostre uma 
+contagem até esse valor: Ex: Digite um valor: 35 Contagem: 1 2 3 4 5 6 7 ... 33 34 35 Acabou!
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -53,7 +54,8 @@ rl.question('Digite um valor inteiro e positivo: ', (valor) => {
 });
 
 
-Questão 06:
+Questão 06:Desenvolva um algoritmo que mostre uma contagem regressiva de 30 até 1, marcando os números
+que forem divisíveis por 4, exatamente como mostrado abaixo: 30 29 [28] 27 26 25 [24] 23 22 21 [20] 19 18 17 [16]...
 let resultado = [];
 
 for (let i = 30; i >= 1; i--) {
@@ -66,7 +68,8 @@ for (let i = 30; i >= 1; i--) {
 
 console.log(resultado.join(" "));
 
-Questão 07:
+Questão 07:Crie um algoritmo que leia o valor inicial da contagem, o valor final e o incremento, mostrando em seguida
+todos os valores no intervalo: Ex: Digite o primeiro Valor: 3 Digite o último Valor: 10 Digite o incremento: 2 Contagem: 3 5 7 9 Acabou!
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -93,9 +96,27 @@ rl.question('Digite o primeiro valor: ', (resposta) => {
 
       console.log('\nAcabou!');
       rl.close();
-    });
-  });
+    }); 
 });
+});
+
+Questão 08: O programa acima vai ter um problema quando digitarmos o primeiro valor maior que o último.
+Resolva esse problema com um código que funcione em qualquer situação.
+
+Questão 09:Crie um programa que calcule e mostre na tela o resultado da soma entre 6 + 8 + 10
+12 + 14 + ... + 98 + 100.
+for (let i = 6; i <= 100; i +=2) {
+  console.log(`Contagem: ${i}`);
+    }
+    console.log('Acabou!');
+
+Questão 10:Desenvolva um aplicativo que mostre na tela o resultado da expressão 500 + 450 + 400 + 350 + 300 + ... + 50 + 0.
+for (let i = 500; i >= 0; i -= 50) {
+  console.log(`Contagem: ${i}`);
+    }
+    console.log('Acabou!');
+
+Questão 11: Faça um programa que leia 7 números inteiros e no final mostre o somatório entre eles.
 
 
  
