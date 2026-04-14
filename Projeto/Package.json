@@ -1,7 +1,7 @@
 {
-    "name": "meu-projeto",
+    "name": "Leitura-e-Escrita-de-Arquivos-node.js",
     "version": "1.0.0",
-    "descriptiom": "meu primeiro projeto",
+    "descriptiom": "Ler e Escrever Arquivos em node.js",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
