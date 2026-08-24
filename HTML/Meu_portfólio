@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio Isabella</title>
+</head>
+<body>
+    <!--CABEÇALHO-->
+
+    <header> 
+        <h1> MEU SITE FAVORITO</h1>
+
+        <p> Bem-vindo ao meu primeiro site</p>
+
+        <!--MENU-->
+        <nav>
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#sobre">Sobre mim</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+                <li><a href="#contato">Contato</a></li>
+
+            </ul>
+        </nav>
+        <!--INICÌO-->
+        <div id="inicío">
+            <h2>Olá!</h2>
+            <p> 
+                Meu nome é Isabella e estou aprendendo
+                desenvolvimento de páginas web.
+            </p>
+            <img
+                scr="https://via.placeholder.com/300"
+                alt="Imagem de apresentação"
+            >
+        </div>
+
+        <!--SOBRE MIM-->
+        <div id="sobre" >
+            <h2>Sobre mim</h2>
+
+            <p> 
+                Sou uma pessoa interresada em tecnologia, 
+                criação de sites e desenvolvimento web
+            </p>
+
+            <p>
+                Este é meu primeiro protifólio desenvolvido utilizando HTML.
+
+            </p>
+
+        </div>
+
+        <!--HABILIDADES-->
+        <div id="habilidades"
+
+        <h2>Minhas habilidades</h2>
+
+
+        <ul>
+            <li>HTML</li>
+            <li>Criação de sites</li>
+            <li>Design</li>
+            <li>tecnologia</li>
+            <li>Marketing Digital</li>
+        </ul>
+    </div>
+
+    <!--PROJETOS-->
+    <div id="projetos">
+
+        <h2>Meus Projetos</h2>
+
+    <div>
+        <h3>Projeto 1</h3>
+        <img
+        scr="https://via.placeholder.com/200"
+        alt="Imagem do Projeto1"
+        >
+
+        <p>
+            Meu primeiro projeto desenvolvido em HTML.
+        </p>
+
+        <a href="https://www.google.com" terget="_blank">
+            ver Projeto
+        </a>
+
+        </div>
+
+        <!--CONTATO-->
+        <div id="contato">
+
+            <h2>Contato</h2>
+
+            <p>
+                Entre em contato comigo:
+            </p>
+            <a href="mailto:meuemail@email.com">
+                Enviar e-mail
+            </a>
+        
+        </div>
+
+        <!--RODAPÈ-->
+        <footer>
+            <p>
+                Meu portfólio - 2026
+            </p>
+
+        </footer>
+        
+    </header>
+</body>
+</html>
