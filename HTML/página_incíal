@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="PT_BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Minha Página</h1>
+
+    <h2>Sobre mim</h2>
+
+    <p>Olá! Meu nome é Isabella e estou aprendendo desenvolvimento web</p>
+
+    <h2> Coisas que eu gosto</h2>
+
+    <ul>
+        <li>Jogo</li>
+        <li>Música</li>
+        <li>Filme</li>
+    </ul>
+
+    <h2>Meu site favorito</h2>
+
+    <a href="https://open.spotify.com/intl-pt">
+        Clique aqui
+    </a>
+
+    <h2>Minha imagem </h2>
+
+    <img src="papel_de_parede_musical_azul_com_roxo_notas_musicais_1117000_1_92eafba354936b9a0bb464c480f7c34f.webp" alt="spotifymusic">
+    
+
+</body>
+</html>
