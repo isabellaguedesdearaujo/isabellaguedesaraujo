@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIPAID — Você fala. A BIPAID organiza.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#2563EB',
+                            darkblue: '#1E3A8A',
+                            lightblue: '#DBEAFE',
+                            green: '#16A34A',
+                            purple: '#7C3AED',
+                            bg: '#F8FAFC',
+                            text: '#172033',
+                            alert: '#DC2626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Acessibilidade - Tamanho de Fonte */
+        html { font-size: 16px; transition: background-color 0.3s, color 0.3s; }
+        html.f-sm { font-size: 14px; }
+        html.f-lg { font-size: 18px; }
+        html.f-xl { font-size: 20px; }
+
+        /* Alto Contraste */
+        html.high-contrast {
+            filter: contrast(140%);
+        }
+        html.high-contrast body {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        html.high-contrast .bg-white, html.high-contrast .bg-slate-50, html.high-contrast .bg-brand-bg {
+            background-color: #121212 !important;
+            color: #FFFFFF !important;
+            border-color: #444 !important;
+        }
+
+        /* Animações e Estilos de Rolagem */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-text dark:bg-slate-900 dark:text-slate-100 font-sans min-h-screen flex flex-col md:flex-row antialiased selection:bg-brand-lightblue selection:text-brand-darkblue">
+
+    <header class="w-full bg-slate-900 text-white text-xs py-1 px-4 flex justify-between items-center fixed top-0 z-50 h-8">
+        <span class="font-medium hidden sm:inline">BIPAID Acessibilidade</span>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1">
+                <span>Fonte:</span>
+                <button onclick="changeFontSize(-1)" class="px-1.5 py-0.5 bg-slate-800 hover:bg-slate-700 rounded font-bold" title="Diminuir fonte">A-</button>
+                <button onclick="changeFontSize(0)" class="px-1.5 py-0.5 bg-slate-800 hover:bg-slate-700 rounded text-xs" title="Tamanho normal">A</button>
+                <button onclick="changeFontSize(1)" class="px-1.5 py-0.5 bg-slate-800 hover:bg-slate-700 rounded font-bold" title="Aumentar fonte">A+</button>
+            </div>
+            <button onclick="toggleTheme()" class="flex items-center gap-1 px-2 py-0.5 bg-slate-800 hover:bg-slate-700 rounded">
+                <i data-lucide="moon" class="w-3 h-3 hidden dark:block"></i>
+                <i data-lucide="sun" class="w-3 h-3 dark:hidden"></i>
+                <span class="hidden sm:inline">Tema</span>
+            </button>
+            <button onclick="toggleHighContrast()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 rounded font-semibold text-yellow-400">
+                Alto Contraste
+            </button>
+        </div>
+    </header>
+
+    <div id="login-screen" class="fixed inset-0 bg-brand-bg dark:bg-slate-900 z-50 flex items-center justify-center p-4 transition-opacity duration-300 pt-8">
+        <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-100 dark:border-slate-700 text-center">
+            <div class="flex items-center justify-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <span class="text-3xl font-extrabold tracking-tight text-brand-darkblue dark:text-blue-400">BIPAID</span>
+            </div>
+            <p class="text-xs font-semibold text-brand-purple tracking-widest uppercase mb-1">“Você fala. A BIPAID organiza.”</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Sua rotina conectada em um só lugar.</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">E-mail</label>
+                    <input type="email" required placeholder="seu@email.com" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Senha</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue">
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <a href="#" class="text-brand-blue hover:underline">Esqueci minha senha</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-blue hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all">
+                    Entrar
+                </button>
+                <button type="button" onclick="handleLogin(event)" class="w-full py-2.5 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg text-sm transition-all">
+                    Criar conta
+                </button>
+            </form>
+            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400">
+                Acesse o protótipo funcional sem cadastrar.
+            </div>
+        </div>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 pt-10 pb-4 px-4 sticky top-0 h-screen justify-between z-40">
+        <div>
+            <div class="flex items-center gap-3 px-2 mb-8">
+                <div class="w-9 h-9 rounded-xl bg-brand-blue flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight text-brand-darkblue dark:text-blue-400">BIPAID</span>
+                    <span class="block text-[9px] font-bold text-brand-purple tracking-tight">ASSISTENTE IA</span>
+                </div>
+            </div>
+
+            <nav class="space-y-1">
+                <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-brand-blue bg-brand-lightblue dark:bg-slate-700 dark:text-white">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Início / Dashboard
+                </button>
+                <button onclick="navigate('agenda')" id="nav-agenda" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="calendar" class="w-5 h-5"></i> Agenda Inteligente
+                </button>
+                <button onclick="navigate('notas')" id="nav-notas" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="sticky-note" class="w-5 h-5"></i> Notas Inteligentes
+                </button>
+                <button onclick="navigate('financeiro')" id="nav-financeiro" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="wallet" class="w-5 h-5"></i> Meu Dinheiro
+                </button>
+                <button onclick="navigate('metas')" id="nav-metas" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="target" class="w-5 h-5"></i> Minhas Metas
+                </button>
+                <button onclick="navigate('eventos')" id="nav-eventos" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-brand-purple"></i> Eventos EPT
+                </button>
+                <button onclick="navigate('resumo')" id="nav-resumo" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Minha Semana
+                </button>
+            </nav>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-3 px-2 mb-3">
+                <div class="w-8 h-8 rounded-full bg-brand-blue text-white font-bold flex items-center justify-center text-xs">
+                    US
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-semibold truncate">Estudante EPT</p>
+                    <p class="text-xs text-slate-400 truncate">usuario@bipaid.com</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="w-full flex items-center gap-2 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 p-2 rounded-md font-medium">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Sair do sistema
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 pt-12 pb-24 md:pb-8 px-4 md:px-8 max-w-7xl mx-auto w-full overflow-y-auto">
+        
+        <section id="sec-dashboard" class="space-y-6">
+            <div class="bg-gradient-to-r from-brand-blue to-brand-darkblue text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 opacity-10 text-white">
+                    <i data-lucide="bot" class="w-48 h-48"></i>
+                </div>
+                <span class="inline-block px-2.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider mb-2">Conectado</span>
+                <h1 class="text-2xl md:text-3xl font-bold">Olá, Estudante!</h1>
+                <p class="text-blue-100 mt-1 max-w-xl text-sm md:text-base">O que você precisa organizar hoje? A BIPAID já preparou o resumo da sua rotina.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="font-bold text-lg text-brand-darkblue dark:text-blue-300 flex items-center gap-2">
+                                <i data-lucide="calendar-check" class="w-5 h-5 text-brand-blue"></i> Próximos Compromissos & Tarefas
+                            </h2>
+                            <button onclick="navigate('agenda')" class="text-xs text-brand-blue font-semibold hover:underline">Ver tudo</button>
+                        </div>
+                        <div id="dash-tasks-list" class="space-y-3">
+                            </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-900 to-indigo-900 text-white rounded-xl p-5 shadow-sm border border-purple-700">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs bg-purple-500/30 text-purple-200 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> Recomendado por IA
+                            </span>
+                            <span class="text-xs text-purple-300">EPT & Tecnologia</span>
+                        </div>
+                        <h3 class="font-bold text-base">Feira de Inovação & Tecnologia EPT 2026</h3>
+                        <p class="text-xs text-purple-200 mt-1 mb-3">Esse evento combina com seu interesse em programação e desenvolvimento de projetos.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-purple-800 text-xs">
+                            <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Sexta, 14:00</span>
+                            <button onclick="addEventToAgenda('Feira de Inovação EPT', '2026-08-28T14:00')" class="px-3 py-1.5 bg-brand-purple hover:bg-purple-600 font-semibold rounded-lg transition-all flex items-center gap-1">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar à minha agenda
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-bold text-brand-darkblue dark:text-blue-300 flex items-center gap-2 text-base">
+                                <i data-lucide="dollar-sign" class="w-5 h-5 text-brand-green"></i> Financeiro
+                            </h2>
+                            <button onclick="navigate('financeiro')" class="text-xs text-brand-blue font-semibold hover:underline">Detalhes</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-100 dark:border-emerald-900">
+                                <span class="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium block">Saldo Atual</span>
+                                <span class="text-lg font-bold text-brand-green">R$ 850,00</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Gastos do Mês</span>
+                                <span class="text-lg font-bold text-slate-700 dark:text-slate-200">R$ 350,00</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg flex items-start gap-2 text-xs text-amber-800 dark:text-amber-200">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="font-semibold">Alerta de Gastos IA:</strong> Você utilizou 70% do seu limite estipulado para Lazer este mês.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-bold text-brand-darkblue dark:text-blue-300 flex items-center gap-2 text-base">
+                                <i data-lucide="target" class="w-5 h-5 text-brand-purple"></i> Metas Ativas
+                            </h2>
+                            <button onclick="navigate('metas')" class="text-xs text-brand-blue font-semibold hover:underline">Ver Metas</button>
+                        </div>
+                        <div id="dash-metas-list" class="space-y-3">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-agenda" class="hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Agenda Inteligente</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Gerencie e distribua seus compromissos com suporte da IA.</p>
+                </div>
+                <button onclick="openModalTask()" class="px-4 py-2 bg-brand-blue text-white rounded-lg font-medium text-sm hover:bg-blue-700 flex items-center gap-2 self-start">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Nova Tarefa / Evento
+                </button>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex flex-wrap gap-2 items-center justify-between">
+                <div class="flex gap-1 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg text-xs font-semibold">
+                    <button class="px-3 py-1 bg-white dark:bg-slate-600 rounded shadow-sm">Dia</button>
+                    <button class="px-3 py-1 text-slate-600 dark:text-slate-300">Semana</button>
+                    <button class="px-3 py-1 text-slate-600 dark:text-slate-300">Mês</button>
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto py-1">
+                    <span class="text-xs font-semibold text-slate-400">Categorias:</span>
+                    <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[11px] font-semibold rounded-full">Trabalho</span>
+                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[11px] font-semibold rounded-full">Estudos</span>
+                    <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[11px] font-semibold rounded-full">Eventos</span>
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[11px] font-semibold rounded-full">Casa</span>
+                </div>
+            </div>
+
+            <div id="full-agenda-list" class="space-y-3">
+                </div>
+        </section>
+
+        <section id="sec-notas" class="hidden space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Bloco de Notas Inteligente</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Escreva livremente. A BIPAID extrai tarefas, metas e compromissos automaticamente.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                    <h2 class="font-semibold text-sm">Criar / Analisar Nota</h2>
+                    <textarea id="note-input" rows="6" placeholder="Exemplo: Comprar cartolina para a feira de ciências, terminar a apresentação de Quinta e estudar matemática para a prova..." class="w-full p-3 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue"></textarea>
+                    <button onclick="analyzeNote()" class="w-full py-2.5 bg-brand-purple text-white font-medium text-sm rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Analisar Nota com BIPAID IA
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                    <h2 class="font-semibold text-sm flex items-center gap-2">
+                        <i data-lucide="bot" class="w-4 h-4 text-brand-purple"></i> Extração Sugerida pela IA
+                    </h2>
+                    <div id="note-suggestions" class="min-h-[160px] bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 text-xs text-slate-500 flex items-center justify-center text-center">
+                        Digite um texto ao lado e clique em "Analisar Nota" para que a IA identifique suas obrigações.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-financeiro" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Meu Dinheiro</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Controle financeiro simples, claro e inteligente.</p>
+                </div>
+                <button onclick="addExpense()" class="px-3 py-2 bg-brand-green text-white rounded-lg font-medium text-sm hover:bg-emerald-700 flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Registrar Gasto/Entrada
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <span class="text-xs text-slate-400 font-medium">Entradas (Mesada/Bolsa)</span>
+                    <p class="text-xl font-bold text-brand-green mt-1">R$ 1.200,00</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <span class="text-xs text-slate-400 font-medium">Total Gasto</span>
+                    <p class="text-xl font-bold text-slate-700 dark:text-slate-200 mt-1">R$ 350,00</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <span class="text-xs text-slate-400 font-medium">Saldo Disponível</span>
+                    <p class="text-xl font-bold text-brand-blue mt-1">R$ 850,00</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                <h2 class="font-bold text-sm text-brand-darkblue dark:text-blue-300 flex items-center gap-2">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-brand-blue"></i> Análise e Alertas Financeiros Inteligentes
+                </h2>
+                <div class="space-y-2 text-xs">
+                    <div class="p-3 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 rounded-lg border border-amber-200 dark:border-amber-900 flex items-start gap-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                        <span><strong>Limite de Lazer:</strong> Você já utilizou 80% da sua meta de gastos para Lazer este mês.</span>
+                    </div>
+                    <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 rounded-lg border border-emerald-200 dark:border-emerald-900 flex items-start gap-2">
+                        <i data-lucide="trending-down" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span><strong>Economia Positiva:</strong> Seus gastos com alimentação reduziram 15% em relação ao mês anterior!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-metas" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Minhas Metas</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Acompanhe seu progresso pessoal, acadêmico e financeiro.</p>
+                </div>
+                <button onclick="alert('Funcionalidade de criar nova meta simulada!')" class="px-3 py-2 bg-brand-blue text-white rounded-lg font-medium text-sm hover:bg-blue-700 flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Nova Meta
+                </button>
+            </div>
+
+            <div id="metas-full-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
+        </section>
+
+        <section id="sec-eventos" class="hidden space-y-6">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Eventos EPT & Tecnologia</h1>
+                    <span class="px-2 py-0.5 bg-brand-purple text-white text-[10px] font-bold rounded-full">FONTES OFICIAIS</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Educação Profissional, Tecnológica, Escolas do Futuro e Inovação.</p>
+            </div>
+
+            <div class="space-y-4" id="eventos-ept-list">
+                </div>
+        </section>
+
+        <section id="sec-resumo" class="hidden space-y-6">
+            <div>
+                <h1 class="text-2xl font-bold text-brand-darkblue dark:text-blue-400">Minha Semana (Resumo IA)</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Visão consolidada do seu desempenho e atividades dos últimos 7 dias.</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800/80 p-6 rounded-2xl border border-blue-100 dark:border-slate-700 space-y-4">
+                <div class="flex items-center gap-2 text-brand-blue dark:text-blue-400 font-bold">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> Relatório Inteligente
+                </div>
+                <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                    “Nesta semana você concluiu <strong>12 tarefas</strong>, participou de <strong>1 evento oficial EPT</strong> e manteve seus gastos dentro da margem de segurança (R$ 180,00 investidos). Sua meta financeira para economia avançou <strong>30%</strong>.”
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <span class="text-2xl font-bold text-brand-green">12</span>
+                    <span class="block text-xs text-slate-400 mt-1">Tarefas Concluídas</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <span class="text-2xl font-bold text-brand-blue">3</span>
+                    <span class="block text-xs text-slate-400 mt-1">Tarefas Pendentes</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <span class="text-2xl font-bold text-brand-purple">2</span>
+                    <span class="block text-xs text-slate-400 mt-1">Provas / Estudos</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <span class="text-2xl font-bold text-emerald-600">R$ 180</span>
+                    <span class="block text-xs text-slate-400 mt-1">Gasto Semanal</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 flex justify-around items-center h-16 z-40 px-2">
+        <button onclick="navigate('dashboard')" id="mob-dashboard" class="flex flex-col items-center gap-1 text-brand-blue">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Início</span>
+        </button>
+        <button onclick="navigate('agenda')" id="mob-agenda" class="flex flex-col items-center gap-1 text-slate-400">
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Agenda</span>
+        </button>
+        <button onclick="navigate('notas')" id="mob-notas" class="flex flex-col items-center gap-1 text-slate-400">
+            <i data-lucide="sticky-note" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Notas</span>
+        </button>
+        <button onclick="navigate('financeiro')" id="mob-financeiro" class="flex flex-col items-center gap-1 text-slate-400">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Finanças</span>
+        </button>
+        <button onclick="navigate('eventos')" id="mob-eventos" class="flex flex-col items-center gap-1 text-slate-400">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">EPT</span>
+        </button>
+    </nav>
+
+    <button onclick="toggleIaChat()" class="fixed bottom-20 md:bottom-8 right-5 z-50 w-14 h-14 bg-gradient-to-r from-brand-blue to-brand-purple text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-all group">
+        <i data-lucide="bot" class="w-7 h-7"></i>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-brand-green border-2 border-white rounded-full"></span>
+    </button>
+
+    <div id="ia-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-800 w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 flex flex-col h-[80vh] sm:h-[600px] overflow-hidden">
+            
+            <div class="p-4 bg-gradient-to-r from-brand-blue to-brand-purple text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+                        <i data-lucide="bot" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm">Assistente BIPAID IA</h3>
+                        <p class="text-[10px] text-blue-100">Pronto para organizar sua rotina</p>
+                    </div>
+                </div>
+                <button onclick="toggleIaChat()" class="text-white/80 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <div class="p-2 bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 flex gap-2 overflow-x-auto text-[11px]">
+                <button onclick="useCommand('Tenho prova de matemática sexta')" class="px-2.5 py-1 bg-white dark:bg-slate-600 rounded-full border border-slate-200 dark:border-slate-500 whitespace-nowrap hover:bg-slate-100">
+                    "Prova sexta"
+                </button>
+                <button onclick="useCommand('Registrar gasto de R$ 25 com lanche')" class="px-2.5 py-1 bg-white dark:bg-slate-600 rounded-full border border-slate-200 dark:border-slate-500 whitespace-nowrap hover:bg-slate-100">
+                    "Gasto R$25 lanche"
+                </button>
+                <button onclick="useCommand('Quero economizar R$ 500')" class="px-2.5 py-1 bg-white dark:bg-slate-600 rounded-full border border-slate-200 dark:border-slate-500 whitespace-nowrap hover:bg-slate-100">
+                    "Nova Meta"
+                </button>
+            </div>
+
+            <div id="ia-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+                <div class="flex items-start gap-2 max-w-[85%]">
+                    <div class="w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-[10px] font-bold shrink-0">IA</div>
+                    <div class="bg-slate-100 dark:bg-slate-700 p-3 rounded-2xl rounded-tl-none">
+                        Olá! O que você deseja organizar agora? Pode digitar ou usar o microfone:
+                        <br><em>“Tenho prova de matemática sexta, preciso estudar amanhã e tenho que comprar um presente sábado.”</em>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="handleIaSubmit(event)" class="p-3 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2">
+                <button type="button" onclick="simulateVoiceInput()" title="Comando por Voz" class="p-2 text-slate-400 hover:text-brand-blue hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full">
+                    <i data-lucide="mic" class="w-5 h-5"></i>
+                </button>
+                <input id="ia-input" type="text" placeholder="Fale ou digite seus compromissos..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-brand-blue">
+                <button type="submit" class="p-2 bg-brand-blue text-white rounded-lg hover:bg-blue-700">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        // ESTADO GLOBAL DA APLICAÇÃO (PROTÓTIPO)
+        const state = {
+            tasks: [
+                { id: 1, name: 'Estudar para prova de Matemática', date: '2026-08-28', category: 'Estudos', priority: 'Urgente', completed: false },
+                { id: 2, name: 'Comprar presente de aniversário', date: '2026-08-29', category: 'Compras', priority: 'Normal', completed: false },
+                { id: 3, name: 'Entregar trabalho de Programação EPT', date: '2026-08-31', category: 'Estudos', priority: 'Importante', completed: true }
+            ],
+            metas: [
+                { id: 1, title: 'Economizar R$ 1.000 para curso', target: 1000, current: 600, category: 'Financeira' },
+                { id: 2, title: 'Concluir 5 módulos de Python', target: 5, current: 4, category: 'Acadêmica' }
+            ],
+            eventosEPT: [
+                { id: 101, title: 'Oficina Prática de Robótica e IA', date: '2026-09-02', time: '10:00', local: 'Escola do Futuro / Lab 3', desc: 'Introdução aos sistemas autônomos.', source: 'Secretaria de Ciência e Tecnologia' },
+                { id: 102, title: 'Feira de Carreiras Técnicas EPT', date: '2026-09-05', time: '09:00', local: 'Centro de Convenções', desc: 'Oportunidades de estágio e networking.', source: 'Portal EPT Oficial' }
+            ]
+        };
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderDashboard();
+            renderAgenda();
+            renderMetas();
+            renderEventosEPT();
+        });
+
+        // NAVEGAÇÃO ENTRE TELAS (SPA)
+        function navigate(sectionId) {
+            const sections = ['dashboard', 'agenda', 'notas', 'financeiro', 'metas', 'eventos', 'resumo'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById(`sec-${sectionId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Atualizar classes ativas dos menus
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('bg-brand-lightblue', 'text-brand-blue', 'dark:bg-slate-700', 'dark:text-white');
+            });
+            const activeNav = document.getElementById(`nav-${sectionId}`);
+            if (activeNav) activeNav.classList.add('bg-brand-lightblue', 'text-brand-blue', 'dark:bg-slate-700', 'dark:text-white');
+        }
+
+        // TEMA E ACESSIBILIDADE
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function toggleHighContrast() {
+            document.documentElement.classList.toggle('high-contrast');
+        }
+
+        function changeFontSize(direction) {
+            const html = document.documentElement;
+            html.classList.remove('f-sm', 'f-lg', 'f-xl');
+            if (direction === -1) html.classList.add('f-sm');
+            if (direction === 1) html.classList.add('f-lg');
+            if (direction === 2) html.classList.add('f-xl');
+        }
+
+        // AUTENTICAÇÃO SIMULADA
+        function handleLogin(e) {
+            e.preventDefault();
+            document.getElementById('login-screen').classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                document.getElementById('login-screen').classList.add('hidden');
+            }, 300);
+        }
+
+        function logout() {
+            document.getElementById('login-screen').classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+        }
+
+        // RENDERIZAÇÃO DE DADOS
+        function renderDashboard() {
+            const list = document.getElementById('dash-tasks-list');
+            list.innerHTML = state.tasks.slice(0, 3).map(task => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" class="w-4 h-4 text-brand-blue rounded border-slate-300">
+                        <span class="text-xs font-medium ${task.completed ? 'line-through text-slate-400' : ''}">${task.name}</span>
+                    </div>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full ${task.priority === 'Urgente' ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-700'}">${task.priority}</span>
+                </div>
+            `).join('');
+
+            renderMetasDash();
+        }
+
+        function renderMetasDash() {
+            const list = document.getElementById('dash-metas-list');
+            list.innerHTML = state.metas.map(meta => {
+                const pct = Math.round((meta.current / meta.target) * 100);
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-700 dark:text-slate-300">${meta.title}</span>
+                            <span class="font-bold text-brand-green">${pct}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                            <div class="bg-brand-green h-2 rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAgenda() {
+            const list = document.getElementById('full-agenda-list');
+            list.innerHTML = state.tasks.map(task => `
+                <div class="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" class="w-4 h-4 text-brand-blue rounded">
+                        <div>
+                            <h4 class="font-semibold text-sm ${task.completed ? 'line-through text-slate-400' : ''}">${task.name}</h4>
+                            <span class="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
+                                <i data-lucide="calendar" class="w-3 h-3"></i> ${task.date} — Categoria: ${task.category}
+                            </span>
+                        </div>
+                    </div>
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${
+                        task.priority === 'Urgente' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-800'
+                    }">${task.priority}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderMetas() {
+            const list = document.getElementById('metas-full-list');
+            list.innerHTML = state.metas.map(meta => {
+                const pct = Math.round((meta.current / meta.target) * 100);
+                return `
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-brand-purple uppercase tracking-wider">${meta.category}</span>
+                            <span class="text-xs text-slate-400">${meta.current} de ${meta.target}</span>
+                        </div>
+                        <h3 class="font-bold text-sm">${meta.title}</h3>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3">
+                            <div class="bg-brand-green h-3 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                        <p class="text-right text-xs font-bold text-brand-green">${pct}% Concluído</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderEventosEPT() {
+            const list = document.getElementById('eventos-ept-list');
+            list.innerHTML = state.eventosEPT.map(ev => `
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <span class="text-[10px] font-bold text-brand-blue uppercase bg-blue-50 dark:bg-slate-700 px-2 py-0.5 rounded">Fonte Oficial: ${ev.source}</span>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">${ev.title}</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">${ev.desc}</p>
+                        <div class="flex items-center gap-4 text-xs text-slate-400 pt-1">
+                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${ev.date} às ${ev.time}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${ev.local}</span>
+                        </div>
+                    </div>
+                    <button onclick="addEventToAgenda('${ev.title}', '${ev.date}T${ev.time}')" class="px-3.5 py-2 bg-brand-blue hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shrink-0">
+                        <i data-lucide="calendar-plus" class="w-4 h-4"></i> Adicionar à minha agenda
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // LÓGICA DO ASSISTENTE DE IA
+        function toggleIaChat() {
+            document.getElementById('ia-modal').classList.toggle('hidden');
+        }
+
+        function useCommand(text) {
+            document.getElementById('ia-input').value = text;
+        }
+
+        function simulateVoiceInput() {
+            const input = document.getElementById('ia-input');
+            input.value = "Estudar para a prova de química na quinta-feira";
+            setTimeout(() => {
+                handleIaSubmit(new Event('submit'));
+            }, 600);
+        }
+
+        function handleIaSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('ia-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chat = document.getElementById('ia-chat-messages');
+
+            // Mensagem Usuário
+            chat.innerHTML += `
+                <div class="flex items-start gap-2 max-w-[85%] ml-auto flex-row-reverse">
+                    <div class="w-6 h-6 rounded-full bg-slate-700 text-white flex items-center justify-center text-[10px] font-bold shrink-0">Você</div>
+                    <div class="bg-brand-blue text-white p-3 rounded-2xl rounded-tr-none">
+                        ${text}
+                    </div>
+                </div>
+            `;
+
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+
+            // Resposta Simulada da IA
+            setTimeout(() => {
+                let response = "Entendido! Processei suas informações e estruturei na sua rotina.";
+                
+                if (text.toLowerCase().includes('matemática') || text.toLowerCase().includes('prova')) {
+                    state.tasks.unshift({ id: Date.now(), name: 'Estudar para Prova', date: '2026-08-28', category: 'Estudos', priority: 'Urgente', completed: false });
+                    response = " Identifiquei um compromisso acadêmico: Adicionei <strong>'Estudar para Prova'</strong> na sua Agenda de Estudos para Quinta-Feira com prioridade Urgente.";
+                } else if (text.toLowerCase().includes('gasto') || text.toLowerCase().includes('lanche')) {
+                    response = " Registrei o lançamento de R$ 25,00 em Gastos com Alimentação na aba 'Meu Dinheiro'.";
+                }
+
+                chat.innerHTML += `
+                    <div class="flex items-start gap-2 max-w-[85%]">
+                        <div class="w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-[10px] font-bold shrink-0">IA</div>
+                        <div class="bg-slate-100 dark:bg-slate-700 p-3 rounded-2xl rounded-tl-none">
+                            ${response}
+                        </div>
+                    </div>
+                `;
+                chat.scrollTop = chat.scrollHeight;
+                renderDashboard();
+                renderAgenda();
+            }, 800);
+        }
+
+        // LÓGICA DO BLOCO DE NOTAS INTELIGENTE
+        function analyzeNote() {
+            const input = document.getElementById('note-input').value;
+            const target = document.getElementById('note-suggestions');
+
+            if (!input.trim()) {
+                target.innerHTML = `<span class="text-red-500">Por favor, escreva alguma nota antes de analisar.</span>`;
+                return;
+            }
+
+            target.innerHTML = `
+                <div class="space-y-3 text-left w-full">
+                    <p class="font-bold text-brand-purple flex items-center gap-1">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> A BIPAID encontrou 3 itens na sua nota:
+                    </p>
+                    <div class="p-2 bg-white dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600 flex justify-between items-center">
+                        <span> Comprar cartolina</span>
+                        <button onclick="this.innerText=' Adicionado'; this.disabled=true;" class="px-2 py-1 bg-brand-blue text-white text-[10px] rounded font-semibold">Criar Tarefa</button>
+                    </div>
+                    <div class="p-2 bg-white dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600 flex justify-between items-center">
+                        <span> Terminar apresentação</span>
+                        <button onclick="this.innerText=' Adicionado'; this.disabled=true;" class="px-2 py-1 bg-brand-blue text-white text-[10px] rounded font-semibold">Criar Lembrete</button>
+                    </div>
+                    <div class="p-2 bg-white dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600 flex justify-between items-center">
+                        <span> Estudar para a prova</span>
+                        <button onclick="this.innerText=' Adicionado'; this.disabled=true;" class="px-2 py-1 bg-brand-blue text-white text-[10px] rounded font-semibold">Criar Compromisso</button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // AÇÕES DA AGENDA
+        function addEventToAgenda(title, dateStr) {
+            state.tasks.unshift({
+                id: Date.now(),
+                name: `[Evento EPT] ${title}`,
+                date: dateStr.split('T')[0],
+                category: 'Eventos',
+                priority: 'Importante',
+                completed: false
+            });
+            renderDashboard();
+            renderAgenda();
+            alert(`O evento "${title}" foi adicionado com sucesso à sua Agenda!`);
+        }
+
+        function toggleTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) task.completed = !task.completed;
+            renderDashboard();
+            renderAgenda();
+        }
+
+        function addExpense() {
+            alert('Lançamento registrado com sucesso! Atualizado no painel Meu Dinheiro.');
+        }
+
+        function openModalTask() {
+            const name = prompt("Nome da Tarefa/Compromisso:");
+            if (name) {
+                state.tasks.unshift({
+                    id: Date.now(),
+                    name: name,
+                    date: '2026-09-01',
+                    category: 'Geral',
+                    priority: 'Normal',
+                    completed: false
+                });
+                renderDashboard();
+                renderAgenda();
+            }
+        }
+    </script>
+</body>
+</html>
