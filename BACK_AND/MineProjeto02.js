@@ -51,7 +51,7 @@ switch (opcaoPagamento) {
 } 
 
 
- let = descontoEspecial ="";
+ let descontoEspecial ="";
  if(valorTotal >= 100 && quantidade >= 2){
     descontoEspecial = (" Você tem desconto especial");
  }else{
