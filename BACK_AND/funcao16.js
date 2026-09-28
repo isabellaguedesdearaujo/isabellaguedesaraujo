@@ -1,5 +1,4 @@
-funcao16.js
-100%
+
 const readline = require("readline");
 
 const rl = readline.createInterface({
